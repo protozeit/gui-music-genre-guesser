@@ -149,13 +149,13 @@ def prediction_confidence(X, model):
     c = max(model.predict(X)[0])
     if c < 0.25:
         return "Just throwing a guess here\n"
-    elif c < 35:
+    elif c < 0.35:
         return "Sounds like\n"
-    elif c < 45:
+    elif c < 0.45:
         return "I'm saying this is\n"
-    elif c < 60:
+    elif c < 0.60:
         return "My calculations indicate\n"
-    elif c < 70:
+    elif c < 0.70:
         return "Pretty sure this is\n"
     return "Yup, that's some\n"
 
