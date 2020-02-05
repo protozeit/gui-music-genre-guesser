@@ -1,9 +1,17 @@
 from scipy import stats
+import utils
+
+from tensorflow.keras.layers import Dense, Dropout, BatchNormalization, Conv2D
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import load_model
+from tensorflow.keras.optimizers import RMSprop, Nadam
 
 import librosa
 import numpy as np
 import pandas as pd
+import sklearn as skl
 import warnings
+import pickle
 
 genre_dict = {
     'Hip-Hop': 0,
@@ -104,7 +112,7 @@ def compute_features(filepath):
 
     return features
 
-def load_model(modelname):
+def load_model_from_file(modelname):
     model = Sequential()
 
     model.add(Dense(128, input_dim=207, activation='relu'))
@@ -120,3 +128,14 @@ def load_model(modelname):
     model.load_weights(modelname)
 
     return model
+
+def extract_features(wavfile):
+    pca = pickle.load(open('pca', 'rb'))
+
+    X = compute_features(wavfile).to_frame()
+    X = skl.preprocessing.StandardScaler().fit_transform(X)
+
+    X = pca.transform(X)
+    print('extracted features of form : '+ str(X.shape))
+    return X
+
