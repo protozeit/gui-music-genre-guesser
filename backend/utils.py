@@ -145,6 +145,20 @@ def extract_features(wavfile, filler_track, pca):
     print('extracted features of form : '+ str(X.shape))
     return X
 
+def prediction_confidence(X, model):
+    c = max(model.predict(X)[0])
+    if c < 0.25:
+        return "Just throwing a guess here\n"
+    elif c < 35:
+        return "Seems to be\n"
+    elif c < 45:
+        return "I'm saying this is\n"
+    elif c < 60:
+        return "My calculations indicate\n"
+    elif c < 70:
+        return "Pretty sure this is\n"
+    return "Yup, that's some\n"
+
 def predict_class(X, model):
     return inv_genre_dict[model.predict_classes(X)[0]]
 

@@ -1,0 +1,7 @@
+scipy
+librosa
+keras
+numpy
+pandas
+sklearn
+pickle
