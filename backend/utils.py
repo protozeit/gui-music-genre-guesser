@@ -103,3 +103,20 @@ def compute_features(filepath):
         print('{}: {}'.format(filepath, repr(e)))
 
     return features
+
+def load_model(modelname):
+    model = Sequential()
+
+    model.add(Dense(128, input_dim=207, activation='relu'))
+    model.add(Dropout(0.6))
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(0.4))
+    model.add(Dense(8, activation='softmax'))
+
+    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+    model.summary()
+
+    model.load_weights(modelname)
+
+    return model
