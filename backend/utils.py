@@ -150,7 +150,7 @@ def prediction_confidence(X, model):
     if c < 0.25:
         return "Just throwing a guess here\n"
     elif c < 35:
-        return "Seems to be\n"
+        return "Sounds like\n"
     elif c < 45:
         return "I'm saying this is\n"
     elif c < 60:
