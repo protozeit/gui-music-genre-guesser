@@ -1,5 +1,4 @@
 from scipy import stats
-import utils
 
 from tensorflow.keras.layers import Dense, Dropout, BatchNormalization, Conv2D
 from tensorflow.keras.models import Sequential
@@ -129,13 +128,23 @@ def load_model_from_file(modelname):
 
     return model
 
-def extract_features(wavfile):
-    pca = pickle.load(open('pca', 'rb'))
+def load_resources():
+    pca = pickle.load(open('backend/pca','rb'))
+    filler_track = compute_features('backend/songs/rock.wav')
+    model = load_model_from_file('backend/models/DNN.h5')
+    
+    return pca, filler_track, model
 
-    X = compute_features(wavfile).to_frame()
+def extract_features(wavfile, filler_track, pca):
+    X = compute_features(wavfile).to_frame().T
+    X2 = filler_track.to_frame().T
+
+    X = pd.concat([X,X2])
     X = skl.preprocessing.StandardScaler().fit_transform(X)
-
     X = pca.transform(X)
     print('extracted features of form : '+ str(X.shape))
     return X
+
+def predict_class(X, model):
+    return inv_genre_dict[model.predict_classes(X)[0]]
 
